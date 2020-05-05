@@ -1,24 +1,26 @@
 const express = require('express')
 const next = require('next')
+const bodyParser = require('body-parser');
+const path = require("path")
+
+const routes = require('./routes')
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
-const handle = app.getRequestHandler()
+const handler = routes.getRequestHandler(app)
 
 app.prepare().then(() => {
   const server = express()
+  server.use(bodyParser.urlencoded({ extended: true }))
+  server.use(bodyParser.json())
 
-  server.get('/a', (req, res) => {
-    return app.render(req, res, '/a', req.query)
-  })
-
-  server.get('/b', (req, res) => {
-    return app.render(req, res, '/b', req.query)
-  })
+  // static pages
+  server.use("/index(.html)?/", express.static(path.join(__dirname, "./static/pages/index.html")))
+  server.use(handler)
 
   server.all('*', (req, res) => {
-    return handle(req, res)
+    return handler(req, res)
   })
 
   server.listen(port, err => {

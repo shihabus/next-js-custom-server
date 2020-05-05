@@ -1,1 +1,4 @@
-export default () => <div>b</div>
+import BatContent from 'components/bat'
+export default () => (<div>B for bat
+ <BatContent/>
+</div>)

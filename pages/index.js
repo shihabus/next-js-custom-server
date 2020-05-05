@@ -1,17 +1,36 @@
-import React from 'react'
-import Link from 'next/link'
+import React, { useEffect} from 'react'
+import { Link } from '../routes'
 
-export default () => (
+
+function App() {
+    useEffect(() => {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
+      
+      window.workbox.register()
+    } 
+  }, [])
+  return (
+
+  <section>
+    <p>Routes</p>
   <ul>
     <li>
-      <Link href="/b" as="/a">
-        <a>a</a>
+      <Link route='/a'>
+        <a>A</a>
       </Link>
     </li>
     <li>
-      <Link href="/a" as="/b">
-        <a>b</a>
+      <Link route='bat'>
+        <a>B</a>
       </Link>
     </li>
-  </ul>
+    </ul>
+    <footer>
+    <p>Static pages</p>
+    <a href="/index">Index</a>
+    </footer>
+  </section>
 )
+}
+
+export default App
